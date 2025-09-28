@@ -14,7 +14,10 @@
 
 package cache
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 // Filter is an encoded set of []byte keys.
 type Filter []byte
@@ -72,7 +75,9 @@ func (f *BloomFilter) Insert(h uint32) bool {
 	delta := h>>17 | h<<15
 	for j := uint8(0); j < k; j++ {
 		bitPos := h % uint32(nBits)
-		f.bitmap[bitPos/8] |= 1 << (bitPos % 8)
+		a := f.bitmap[bitPos/8] | 1<<(bitPos%8)
+		fmt.Println(bitPos, a)
+		f.bitmap[bitPos/8] = a
 		h += delta
 	}
 	return true

@@ -97,6 +97,8 @@ func (c *Cache) set(key, value interface{}) bool {
 
 	// 这里进行 PK，必须在 bloomfilter 中出现过一次，才允许 PK
 	// 在 bf 中出现，说明访问频率 >= 2
+	// 如果没查到的时候也加进去了，实际上也没啥问题。这种场景是
+	// 之前没有这个值，然后加入到了bloom中，又有了这个值的情况。
 	if !c.door.Allow(uint32(eitem.key)) {
 		return true
 	}

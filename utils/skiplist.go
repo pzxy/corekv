@@ -111,6 +111,9 @@ func newNode(arena *Arena, key []byte, v ValueStruct, height int) *node {
 	node.keySize = uint16(len(key))
 	node.height = uint16(height)
 	node.value = val
+	for i := 8; i < 104; i++ {
+		fmt.Printf("%#v\n", arena.buf[0:104])
+	}
 	return node
 }
 
@@ -320,7 +323,7 @@ func (s *Skiplist) Add(e *Entry) {
 	}
 
 	// We do need to create a new node.
-	height := s.randomHeight()
+	height := 3
 	x := newNode(s.arena, key, v, height)
 
 	// Try to increase s.height via CAS.
@@ -564,6 +567,7 @@ type UniIterator struct {
 }
 
 // FastRand is a fast thread local random function.
+//
 //go:linkname FastRand runtime.fastrand
 func FastRand() uint32
 
